@@ -99,10 +99,10 @@ func (app *Config) updateInventoryItem(item InventoryItem) error {
 	// Set updated timestamp
 	now := time.Now()
 
-	stmt := `update inventory_items set 
-		item_name = $1, 
-		quantity = $2, 
-		unit = $3, 
+	stmt := `update inventory_items set
+		item_name = $1,
+		quantity = $2,
+		unit = $3,
 		threshold = $4,
 		updated_at = $5
 		where id = $6`
@@ -161,7 +161,7 @@ func (app *Config) adjustInventoryQuantity(id int, adjustment int) error {
 	// Set updated timestamp
 	now := time.Now()
 
-	stmt := `update inventory_items set 
+	stmt := `update inventory_items set
 		quantity = $1,
 		updated_at = $2
 		where id = $3`
@@ -177,11 +177,6 @@ func (app *Config) adjustInventoryQuantity(id int, adjustment int) error {
 		return err
 	}
 
-	// Check if we should log low inventory
-	if newQuantity <= item.Threshold {
-		app.logLowInventory(item.ItemName, newQuantity, item.Threshold)
-	}
-
 	return nil
 }
 
@@ -189,9 +184,9 @@ func (app *Config) adjustInventoryQuantity(id int, adjustment int) error {
 func (app *Config) getLowInventoryItems() ([]InventoryItem, error) {
 	var items []InventoryItem
 
-	query := `select id, item_name, quantity, unit, threshold, created_at, updated_at 
-		from inventory_items 
-		where quantity <= threshold 
+	query := `select id, item_name, quantity, unit, threshold, created_at, updated_at
+		from inventory_items
+		where quantity <= threshold
 		order by item_name`
 
 	rows, err := app.DB.Query(query)
@@ -219,9 +214,4 @@ func (app *Config) getLowInventoryItems() ([]InventoryItem, error) {
 	}
 
 	return items, nil
-}
-
-// logLowInventory logs when an inventory item is at or below its threshold
-func (app *Config) logLowInventory(itemName string, quantity, threshold int) {
-	// In a real application, this would send a request to the logger service
 }

@@ -19,12 +19,12 @@ func initDB(db *sql.DB) error {
 		updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 	);
 	`
-	
+
 	_, err := db.Exec(query)
 	if err != nil {
 		return err
 	}
-	
+
 	log.Println("Menu service database tables initialized")
 	return nil
 }

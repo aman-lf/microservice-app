@@ -99,10 +99,10 @@ func (app *Config) updateMenuItem(item MenuItem) error {
 	// Set updated timestamp
 	now := time.Now().Format(time.RFC3339)
 
-	stmt := `update menu_items set 
-		name = $1, 
-		description = $2, 
-		price = $3, 
+	stmt := `update menu_items set
+		name = $1,
+		description = $2,
+		price = $3,
 		category = $4,
 		updated_at = $5
 		where id = $6`
